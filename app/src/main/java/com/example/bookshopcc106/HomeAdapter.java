@@ -14,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeAdapter extends FirebaseRecyclerAdapter<HomeModel,HomeAdapter.myViewHolder> {
-
+    FirebaseAuth firebaseAuth;
 
     public HomeAdapter(@NonNull FirebaseRecyclerOptions<HomeModel> options) {
         super(options);
@@ -57,6 +58,9 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<HomeModel,HomeAdapter.m
         TextView title,author,price;
 
         LinearLayout viewbook;
+
+
+
 
 
         public myViewHolder(@NonNull View itemView) {
