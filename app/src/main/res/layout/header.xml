@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#AFD3E2"
+    android:gravity="bottom"
+    android:paddingLeft="30dp"
+    android:paddingBottom="5dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:elevation="1200dp"
+        android:id="@+id/view2"
+        app:cardCornerRadius="250dp"
+        android:layout_centerHorizontal="true"
+        android:innerRadius="100dp"
+        android:shape="rectangle"
+        android:thicknessRatio="1.9">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bookshop_wt"
+            android:textAlignment="center"/>
+
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="BookShop"
+        android:textAllCaps="true"
+        android:textSize="16dp"
+        android:fontFamily="@font/lexend_mega"
+        android:textColor="#C08552"
+        android:textAlignment="center"
+      />
+    <TextView
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="www.bookshop.com"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        android:fontFamily="@font/lexend_mega"
+        android:textColor="#C08552"
+        />
+
+
+
+</LinearLayout>

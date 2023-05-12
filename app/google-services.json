@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "882118689511",
+    "firebase_url": "https://bookshop-f65c6-default-rtdb.firebaseio.com",
+    "project_id": "bookshop-f65c6",
+    "storage_bucket": "bookshop-f65c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882118689511:android:8b834d6dd3429a4a915842",
+        "android_client_info": {
+          "package_name": "com.example.bookshopcc106"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882118689511-l2evjiujsprfgnoe0jbekcfkgpnoglln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxw8Flszf6NB3O6G2DEN0XzXOcgMRtWAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882118689511-l2evjiujsprfgnoe0jbekcfkgpnoglln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882118689511:android:24baed7c11bcdd4d915842",
+        "android_client_info": {
+          "package_name": "com.hcdc.sayson.myapplication34"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882118689511-l2evjiujsprfgnoe0jbekcfkgpnoglln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxw8Flszf6NB3O6G2DEN0XzXOcgMRtWAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882118689511-l2evjiujsprfgnoe0jbekcfkgpnoglln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

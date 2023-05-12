@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Bookshop</string>
+    <string name="Nav_open">Nav Open</string>
+    <string name="Nav_close">Nav close</string>
+</resources>
