@@ -43,10 +43,6 @@ cartModel model;
         img = findViewById(R.id.img);
 
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentuser.setText(firebaseAuth.getCurrentUser().getEmail());
-
-
         ///------------------buy and add cart------------
 
         buy =findViewById(R.id.btn_buy);
