@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,7 +22,6 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationBarMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,9 +30,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     NavigationView navigationView;
     NavigationBarMenu barMenu;
     Toolbar toolbar;
-
     RecyclerView recyclerView;
-
     HomeAdapter homeAdapter;
     RecyclerView.LayoutManager layoutManager;
     EditText search;
@@ -48,12 +44,14 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
          search = findViewById(R.id.et_search_book);
         searchbtn = findViewById(R.id.tv_search_btn);
-           ///-------- Getting the current user
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser Cur = firebaseAuth.getCurrentUser();
-        Toast.makeText(home.this, Cur.getEmail(), Toast.LENGTH_SHORT).show();
 
-       // _______ binding the recycleview
+
+         ///-------- Getting the current user
+        firebaseAuth = FirebaseAuth.getInstance();
+
+
+
+       // _______ binding the recycle view
         recyclerView = findViewById(R.id.rv);
         layoutManager = new GridLayoutManager(home.this,3);
         recyclerView.setLayoutManager(layoutManager);
@@ -69,9 +67,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
         homeAdapter = new HomeAdapter(options);
         recyclerView.setAdapter(homeAdapter);
-        /////
-
-
+        //
         //-------------------Hooks____________
         drawerLayout = findViewById(R.id.draw_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -94,27 +90,20 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
-
         //// -----Events
         search.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 showSearch(search.getText().toString());
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
 
             }
-
         });
-
         searchbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,9 +111,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
     }
-
     private void showSearch(String toString) {
-
         if (!toString.isEmpty()){
 
             if(!toString.startsWith(toString.toLowerCase())){
@@ -227,6 +214,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             Intent i = new Intent(home.this,order.class);
             startActivity(i);
         }  if(id ==R.id.nav_logout) {
+                firebaseAuth.signOut();
                 Intent i = new Intent(getApplicationContext(), login.class);
                 startActivity(i);
 

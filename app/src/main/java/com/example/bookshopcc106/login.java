@@ -35,8 +35,10 @@ public class login extends AppCompatActivity {
         errorEmail = findViewById(R.id.tv_error_email);
         errorPassword = findViewById(R.id.tv_error_password);
         firebaseAuth = FirebaseAuth.getInstance();
-
+        /////-----------binding the resources from the ui
+        login = findViewById(R.id.btn_login);
         signup = findViewById(R.id.tv_signup);
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,18 +46,28 @@ public class login extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        login = findViewById(R.id.btn_login);
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             //  LogSuccess();
-                Intent intent = new Intent(login.this, home.class);
-                startActivity(intent);
+              LogSuccess();
             }
         });
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ///--------checking if there is a current user log in
+       FirebaseUser user = firebaseAuth.getCurrentUser();
+       if (user != null){
+           Intent intent = new Intent(login.this, home.class);
+           startActivity(intent);
+       }
+       else {
+       }
+    }
     private void LogSuccess() {
         String Email = email.getText().toString(),
                 Password = password.getText().toString();

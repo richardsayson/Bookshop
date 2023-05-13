@@ -54,9 +54,7 @@ cartModel model;
         });
         addCart = findViewById(R.id.btn_add_cart);
         ////-----getting current user
-
-        currentuser = findViewById(R.id.tv_current_user);
-
+        firebaseAuth = FirebaseAuth.getInstance();
         addCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,8 +65,12 @@ cartModel model;
                 ref.child("rede").setValue(model);
                 Toast.makeText(viewbook.this, "Data inserted", Toast.LENGTH_SHORT).show();
                */
-
-                AddCart("richard");
+                String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
+                String rightEmail = currentuserEmail.replace(".","");
+                Intent i =getIntent();
+                String getTitle = i.getStringExtra("title");
+                book(getTitle);
+                AddCart(rightEmail,getTitle);
             }
         });
 
@@ -89,13 +91,14 @@ cartModel model;
         }
     }
 
-    private void AddCart(String u) {
+    private void AddCart(String rightEmail, String getTitle) {
 
         Map<String,Object> map = new HashMap<>();
         map.put("title",bookTitle);
-        map.put("price",bookPrice);
+        map.put("price",Long.valueOf(bookPrice));
         map.put("url",bookUrl);
-        FirebaseDatabase.getInstance().getReference("cart").child(u)
+        map.put("quantity",1);
+        FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(getTitle)
                 .setValue(map)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -104,9 +107,6 @@ cartModel model;
                                     }
                                 });
     }
-
-
-
     private void book(String getTitle) {
 
     reference = FirebaseDatabase.getInstance().getReference("books");

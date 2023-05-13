@@ -35,10 +35,25 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/poppins"
-                android:text="Bookshop"
+                android:text="Bookshop Cart"
                 android:textColor="#AFD3E2"
                 android:textSize="28sp"/>
         </androidx.appcompat.widget.Toolbar>
+        <TextView
+            android:layout_below="@id/toolbar"
+            android:id="@+id/space"
+            android:paddingBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#AFD3E2"
+            android:paddingLeft="10dp"
+            android:fontFamily="@font/lexend_mega"
+            android:text="Select Voucher to enjoy Shopping Discount"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_below="@id/space"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

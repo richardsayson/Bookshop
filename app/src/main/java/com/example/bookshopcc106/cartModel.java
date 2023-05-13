@@ -1,16 +1,19 @@
 package com.example.bookshopcc106;
 
 public class cartModel {
-    String title,url;
-    Long price;
 
+    Long price,quantity;
+
+
+    String title,url;
     cartModel(){}
-    public cartModel(String title, String url, Long price) {
+
+    public cartModel(Long price, Long quantity, String title, String url) {
+        this.price = price;
+        this.quantity = quantity;
         this.title = title;
         this.url = url;
-        this.price = price;
     }
-
     public String getTitle() {
         return title;
     }
@@ -34,4 +37,12 @@ public class cartModel {
     public void setPrice(Long price) {
         this.price = price;
     }
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
 }

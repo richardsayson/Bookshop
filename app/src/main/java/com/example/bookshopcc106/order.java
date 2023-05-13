@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class order extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -19,10 +20,14 @@ public class order extends AppCompatActivity implements NavigationView.OnNavigat
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+
+        ///----------- getting the current user
+        firebaseAuth = FirebaseAuth.getInstance();
 
         //-------------------Hooks____________
         drawerLayout = findViewById(R.id.draw_layout);
@@ -86,6 +91,8 @@ public class order extends AppCompatActivity implements NavigationView.OnNavigat
 
         }
         if(id ==R.id.nav_logout){
+
+            firebaseAuth.signOut();
             Intent i = new Intent(getApplicationContext(), login.class);
             startActivity(i);
         }
