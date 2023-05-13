@@ -20,10 +20,11 @@
 
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cart_check_book"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_weight="5"/>
+            android:layout_weight="5"
+            android:checked="false"/>
 
         <ImageView
             android:layout_weight="4"
@@ -101,7 +102,7 @@
                  <TextView
                      android:id="@+id/delete_cart_btn"
                      android:background="@drawable/add_minus_bg"
-                     android:layout_marginLeft="30dp"
+                     android:layout_marginLeft="10dp"
                      android:layout_weight="1"
                      android:paddingLeft="10dp"
                      android:paddingRight="10dp"

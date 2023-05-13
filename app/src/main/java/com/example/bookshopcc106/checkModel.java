@@ -1,14 +1,14 @@
 package com.example.bookshopcc106;
 
-public class cartModel {
+public class checkModel {
 
    public Long price,quantity;
 
 
    public String title,url;
-    cartModel(){}
+    checkModel(){}
 
-    public cartModel(Long price, Long quantity, String title, String url) {
+    public checkModel(Long price, Long quantity, String title, String url) {
         this.price = price;
         this.quantity = quantity;
         this.title = title;

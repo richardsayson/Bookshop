@@ -34,6 +34,7 @@ FirebaseAuth firebaseAuth;
 String bookTitle,bookUrl,bookPrice;
 cartModel model;
 
+long orderid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +46,23 @@ cartModel model;
 
         ///------------------buy and add cart------------
 
-        buy =findViewById(R.id.btn_buy);
-        buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+       // buy =findViewById(R.id.btn_buy);
+//        buy.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
+//                String rightEmail = currentuserEmail.replace(".","");
+//                Intent i =getIntent();
+//                String getTitle = i.getStringExtra("title");
+//               // buy_book(rightEmail,getTitle);
+//
+//                Intent intent = new Intent(viewbook.this,checkout.class);
+//                intent.putExtra("title",getTitle);
+//                startActivity(intent);
+//            }
+//        });
 
-            }
-        });
+
         addCart = findViewById(R.id.btn_add_cart);
         ////-----getting current user
         firebaseAuth = FirebaseAuth.getInstance();
@@ -69,8 +80,8 @@ cartModel model;
                 String rightEmail = currentuserEmail.replace(".","");
                 Intent i =getIntent();
                 String getTitle = i.getStringExtra("title");
-                book(getTitle);
                 AddCart(rightEmail,getTitle);
+                //AddBook(getTitle);
             }
         });
 
@@ -91,21 +102,73 @@ cartModel model;
         }
     }
 
+
     private void AddCart(String rightEmail, String getTitle) {
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("title",bookTitle);
-        map.put("price",Long.valueOf(bookPrice));
-        map.put("url",bookUrl);
-        map.put("quantity",1);
-        FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(getTitle)
-                .setValue(map)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(viewbook.this, "Data inserted", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+        FirebaseDatabase.getInstance().getReference("books")
+                .child(rightEmail).child(getTitle).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        model = new cartModel();
+                        if(task.isSuccessful()){
+                            if(task.getResult().exists()){
+                                String bookQuantity;
+                                DataSnapshot dataSnapshot = task.getResult();
+                                bookQuantity = String.valueOf(dataSnapshot.child("quantity").getValue());
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("title", bookTitle);
+                                map.put("price", Long.valueOf(bookPrice));
+                                map.put("url", bookUrl);
+                                map.put("quantity",  Long.valueOf(bookQuantity)+1);
+                                FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(getTitle)
+                                        .setValue(map)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                             //   Toast.makeText(viewbook.this, "Data inserted", Toast.LENGTH_SHORT).show();
+                                                Intent i = new Intent(viewbook.this,cart.class);
+                                                startActivity(i);
+                                            }
+                                        });
+
+                            }  else{
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("title", bookTitle);
+                                map.put("price", Long.valueOf(bookPrice));
+                                map.put("url", bookUrl);
+                                map.put("quantity", 1);
+                                FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(getTitle)
+                                        .setValue(map)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                //Toast.makeText(viewbook.this, "Data inserted", Toast.LENGTH_SHORT).show();
+                                              Intent i = new Intent(viewbook.this,cart.class);
+                                              startActivity(i);
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+
+
+    }
+    private void AddBook(String getTitle) {
+
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("title", bookTitle);
+                                map.put("price", Long.valueOf(bookPrice));
+                                map.put("url", bookUrl);
+                                FirebaseDatabase.getInstance().getReference("book").child(getTitle).push()
+                                        .setValue(map)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Toast.makeText(viewbook.this, "Data inserted", Toast.LENGTH_SHORT).show();
+
+                                            }
+                });
     }
     private void book(String getTitle) {
 
@@ -114,27 +177,25 @@ cartModel model;
         @Override
         public void onComplete(@NonNull Task<DataSnapshot> task) {
 
-            if(task.isSuccessful()){}
+            if(task.isSuccessful()){
+                if(task.getResult().exists()){
 
-               if(task.getResult().exists()){
-
-                   DataSnapshot dataSnapshot = task.getResult();
-
-                   bookTitle = String.valueOf(dataSnapshot.child("title").getValue());
-                   bookPrice = String.valueOf(dataSnapshot.child("price").getValue());
-                   bookUrl = String.valueOf(dataSnapshot.child("url").getValue());
-
-                   Glide.with(viewbook.this)
-                                   .load(bookUrl)
-                           .placeholder(R.drawable.outline_image_24)
-                           .error(R.drawable.outline_image_24)
-                           .into(img);
-
-                   title.setText(bookTitle);
-                   price.setText("₱ "+bookPrice+".00");
+                    DataSnapshot dataSnapshot = task.getResult();
+                    bookTitle = String.valueOf(dataSnapshot.child("title").getValue());
+                    bookPrice = String.valueOf(dataSnapshot.child("price").getValue());
+                    bookUrl = String.valueOf(dataSnapshot.child("url").getValue());
+                    Glide.with(viewbook.this)
+                            .load(bookUrl)
+                            .placeholder(R.drawable.outline_image_24)
+                            .error(R.drawable.outline_image_24)
+                            .into(img);
+                    title.setText(bookTitle);
+                    price.setText("₱ "+bookPrice+".00");
 
 
-               }
+                }
+            }
+
         }
     });
     }

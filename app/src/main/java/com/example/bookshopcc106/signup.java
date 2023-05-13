@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,7 +71,7 @@ public class signup extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 if (task.isSuccessful()) {
 
-                                                    Toast.makeText(signup.this, "Successful", Toast.LENGTH_LONG).show();
+                                                   // Toast.makeText(signup.this, "Successful", Toast.LENGTH_LONG).show();
                                                     FirebaseUser User = firebaseAuth.getCurrentUser();
                                                     if (User != null) {
 

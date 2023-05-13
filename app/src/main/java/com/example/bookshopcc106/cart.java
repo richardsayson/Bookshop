@@ -3,6 +3,9 @@ package com.example.bookshopcc106;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -31,12 +34,14 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
+    Button check;
+    TextView totalcheck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
-
+         check = findViewById(R.id.btn_checkout);
+         totalcheck = findViewById(R.id.checkout_total);
         ////-----getting current user
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -50,8 +55,6 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
         String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
         String rightEmail = currentuserEmail.replace(".","");
 
-
-
         FirebaseRecyclerOptions<cartModel> options =
                 new FirebaseRecyclerOptions.Builder<cartModel>()
                         .setQuery(FirebaseDatabase.getInstance()
@@ -60,6 +63,9 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
 
         cartadapter = new CartAdapter(options);
         recyclerView.setAdapter(cartadapter);
+
+        totalcheck.setText(String.valueOf(cartadapter.total));
+
         //
 
         //-------------------Hooks____________
@@ -83,6 +89,17 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_cart);
+
+
+
+        ////---------Events
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(cart.this,checkout.class);
+                startActivity(i);
+            }
+        });
 
 
     }
