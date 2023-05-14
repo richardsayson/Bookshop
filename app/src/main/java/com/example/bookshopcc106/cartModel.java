@@ -2,18 +2,27 @@ package com.example.bookshopcc106;
 
 public class cartModel {
 
-   public Long price,quantity;
+   public Long price,quantity,totalAmount;
 
+    public Long getTotalAmount() {
+        return totalAmount;
+    }
 
-   public String title,url;
-    cartModel(){}
-
-    public cartModel(Long price, Long quantity, String title, String url) {
+    public cartModel(Long price, Long quantity, Long totalAmount, String title, String url) {
         this.price = price;
         this.quantity = quantity;
+        this.totalAmount = totalAmount;
         this.title = title;
         this.url = url;
     }
+
+    public void setTotalAmount(Long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String title,url;
+    cartModel(){}
+
     public String getTitle() {
         return title;
     }

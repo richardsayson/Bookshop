@@ -2,15 +2,23 @@ package com.example.bookshopcc106;
 
 public class checkModel {
 
-   public Long price,quantity;
+   public Long price,quantity,totalAmount;
 
+    public Long getTotalAmount() {
+        return totalAmount;
+    }
 
-   public String title,url;
+    public void setTotalAmount(Long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String title,url;
     checkModel(){}
 
-    public checkModel(Long price, Long quantity, String title, String url) {
+    public checkModel(Long price, Long quantity,Long totalAmount, String title, String url) {
         this.price = price;
         this.quantity = quantity;
+        this.totalAmount = totalAmount;
         this.title = title;
         this.url = url;
     }

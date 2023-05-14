@@ -176,7 +176,6 @@ long orderid;
     reference.child(getTitle).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
         @Override
         public void onComplete(@NonNull Task<DataSnapshot> task) {
-
             if(task.isSuccessful()){
                 if(task.getResult().exists()){
 
@@ -191,8 +190,6 @@ long orderid;
                             .into(img);
                     title.setText(bookTitle);
                     price.setText("₱ "+bookPrice+".00");
-
-
                 }
             }
 

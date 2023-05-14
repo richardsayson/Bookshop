@@ -19,8 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class cart extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -36,6 +39,7 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
     FirebaseDatabase firebaseDatabase;
     Button check;
     TextView totalcheck;
+    DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +105,21 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
+        reference = FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail);
+        reference.child("total").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+
+                        String bookTitle = String.valueOf(snapshot.child("total").getValue());
+                        totalcheck.setText("₱ "+bookTitle+".00");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
     @Override

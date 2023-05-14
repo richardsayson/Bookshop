@@ -9,15 +9,15 @@
     tools:openDrawer="start"
     android:id="@+id/draw_layout"
     android:theme="@style/Theme.BookshopCC106">
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/main_menu"
+        android:layout_gravity="start"
+        />
 
-<com.google.android.material.navigation.NavigationView
-  android:layout_width="wrap_content"
-  android:layout_height="match_parent"
-   android:id="@+id/nav_view"
-   app:headerLayout="@layout/header"
-      app:menu="@menu/main_menu"
-     android:layout_gravity="start"
-      />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                android:layout_height="60dp"
                android:gravity="bottom">
                <LinearLayout
-                   android:layout_weight="1"
+                   android:layout_weight="3"
                    android:layout_width="wrap_content"
                    android:layout_height="match_parent"
                    android:background="#AFD3E2"
@@ -80,13 +80,12 @@
                        android:id="@+id/check_all"
                        android:layout_width="match_parent"
                        android:layout_height="50dp"
-                       android:layout_weight="1"
+                       android:layout_weight="1.5"
                        android:text="All"
                        android:textColor="#4E535C"/>
                    <TextView
                        android:paddingTop="8dp"
-                       android:layout_weight="1"
-
+                       android:layout_weight="1.5"
                        android:textAlignment="textEnd"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"

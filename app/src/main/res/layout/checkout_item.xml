@@ -138,6 +138,7 @@
         <TextView
             android:layout_marginTop="5dp"
             android:layout_weight="6"
+            android:id="@+id/Order_total"
             android:background="@drawable/add_minus_bg"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

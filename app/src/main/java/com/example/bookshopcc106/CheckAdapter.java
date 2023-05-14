@@ -30,6 +30,7 @@ public class CheckAdapter extends FirebaseRecyclerAdapter<checkModel, CheckAdapt
         String rightEmail = currentuserEmail.replace(".","");
         holder.title.setText(model.getTitle());
         //holder.author.setText(model.getAuthor());
+        holder.totalOrder.setText(String.valueOf(model.getTotalAmount()));
         holder.price.setText("₱ "+model.getPrice()+".00");
         holder.quantity.setText("×"+String.valueOf(model.getQuantity()));
         Glide.with(holder.img.getContext())
@@ -38,7 +39,6 @@ public class CheckAdapter extends FirebaseRecyclerAdapter<checkModel, CheckAdapt
                 .error(R.drawable.outline_image_24)
                 .into(holder.img);
     }
-
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,7 +50,7 @@ public class CheckAdapter extends FirebaseRecyclerAdapter<checkModel, CheckAdapt
     class myViewHolder extends RecyclerView.ViewHolder{
 
         ImageView img;
-        TextView title,author,price,add,minus,delete,quantity;
+        TextView title,totalOrder,price,add,minus,delete,quantity;
 
         CheckBox selectBook;
         LinearLayout viewbook;
@@ -62,7 +62,7 @@ public class CheckAdapter extends FirebaseRecyclerAdapter<checkModel, CheckAdapt
            // author = itemView.findViewById(R.id.tv_author);
             price = itemView.findViewById(R.id.tv_price);
             quantity = itemView.findViewById(R.id.checkout_quantity);
-
+            totalOrder = itemView.findViewById(R.id.Order_total);
 
 
         }
