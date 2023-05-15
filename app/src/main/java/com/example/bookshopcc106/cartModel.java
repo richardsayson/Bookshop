@@ -2,26 +2,26 @@ package com.example.bookshopcc106;
 
 public class cartModel {
 
-   public Long price,quantity,totalAmount;
+   public Long price,quantity,total;
+    public String title,url;
+    cartModel(){}
 
-    public Long getTotalAmount() {
-        return totalAmount;
-    }
 
-    public cartModel(Long price, Long quantity, Long totalAmount, String title, String url) {
+    public cartModel(Long price, Long quantity, Long total, String title, String url) {
         this.price = price;
         this.quantity = quantity;
-        this.totalAmount = totalAmount;
+        this.total = total;
         this.title = title;
         this.url = url;
     }
 
-    public void setTotalAmount(Long totalAmount) {
-        this.totalAmount = totalAmount;
+    public Long getTotal() {
+        return total;
     }
 
-    public String title,url;
-    cartModel(){}
+    public void setTotal(Long total) {
+        this.total = total;
+    }
 
     public String getTitle() {
         return title;

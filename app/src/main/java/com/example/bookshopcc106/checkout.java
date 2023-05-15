@@ -25,8 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
 
 public class checkout extends AppCompatActivity {
 
@@ -41,14 +43,14 @@ public class checkout extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     Button order;
-    TextView total;
+    TextView totalcost;
     CartAdapter cart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-      total = findViewById(R.id.Total_amount);
+      totalcost = findViewById(R.id.Total_amount);
       order = findViewById(R.id.btn_placeOrder);
 
         ////-----getting current user
@@ -79,21 +81,81 @@ public class checkout extends AppCompatActivity {
 
 
         ////-----------
-        reference = FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail);
-        reference.child("total").addValueEventListener(new ValueEventListener() {
+        reference = FirebaseDatabase.getInstance().getReference("checkouttotal").child(rightEmail).child("total");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                long total=0;
+                ////----- getting all totalamount value of checkout_currentUse
+                DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-                    String bookTitle = String.valueOf(snapshot.child("total").getValue());
-                    total.setText("₱ "+bookTitle+".00");
+                 /*   for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                        DecimalFormat formatter = new DecimalFormat("#,###.00");
+                        long a = snapshot.getChildrenCount();
+                        if (snapshot.getChildrenCount()>0) {
+                            for (long i = 0; i <= a; i++) {
+                                Object value = dataSnapshot.getValue();
+                                total += Long.valueOf(value.toString());
+                           }
+                            totalcheck.setText("₱ " + formatter.format(Long.valueOf(total)));
+                  */
+                if (snapshot.exists()) {
+                    total = Long.valueOf(String.valueOf(snapshot.child("total").getValue()));
+                    totalcost.setText("₱ " + formatter.format(Long.valueOf(total)));
+                }else{
+
                 }
+                //Toast.makeText(cart.this, jsonString, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+        ////
+        reference = FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail);
+        reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().exists()){
+                        DataSnapshot dataSnapshot = task.getResult();
+                        JSONObject jsonObject = new JSONObject();
+                     /*
+                        Map<Integer, String> title= new HashMap<>();
+                        for (int i = 0 ;dataSnapshot.getChildrenCount()>i;i++){
+                            String name = dataSnapshot.child("title").getValue().toString();
+                            title.put(i, name);
+                        }
+                        Toast.makeText(checkout.this,
+                                String.valueOf(title),
+                                Toast.LENGTH_LONG).show();
+                       for (int i = 0;i<dataSnapshot.getChildrenCount();){
+
+                       }
+
+                      */
+                         /*   for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Object value = snapshot.getValue();
+                                try {
+                                    jsonObject.put(value);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                        }*/
+
+                       // n.put(jsonObject);
+
+                       // String jsonString = jsonObject.toString();
+                     //   Toast.makeText(checkout.this, jsonString, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }
+        });
+
+
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,19 +173,54 @@ public class checkout extends AppCompatActivity {
                 if(task.isSuccessful()){
                     if(task.getResult().exists()){
                         DataSnapshot dataSnapshot = task.getResult();
-                         int a=Integer.valueOf(String.valueOf(dataSnapshot.getChildrenCount()));
-                        for (int i = 0;a>i;) {
-                            String bookTitle, bookPrice, bookUrl, bookQuantity, totalAmount;
-
-                            Map<String, Object> order = new HashMap<>();
-                            bookTitle = String.valueOf(dataSnapshot.child("title").getValue());
-                            bookPrice = String.valueOf(dataSnapshot.child("price").getValue());
-                            bookUrl = String.valueOf(dataSnapshot.child("url").getValue());
-                          //  order.put();
+                        JSONObject jsonObject = new JSONObject();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String key = snapshot.getKey();
+                            Object value = snapshot.getValue();
+                            try {
+                                jsonObject.put(key, value);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        String jsonString = jsonObject.toString();
+                        Toast.makeText(checkout.this, jsonString, Toast.LENGTH_LONG).show();
                     }
                 }
 
+            }
+        });
+    }
+    public void placeOrder(String email) {
+        reference = FirebaseDatabase.getInstance().getReference("checkout").child(email);
+        reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().exists()){
+                        DataSnapshot dataSnapshot = task.getResult();
+                        String[] title = new String[100];
+                        for (int i = 0; dataSnapshot.getChildrenCount()>i;i++) {
+                         //   title[i] = dataSnapshot.getChildren().;
+                        }
+
+                        FirebaseDatabase.getInstance().getReference("checkouttotal").child(email)
+                                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        DataSnapshot dataSnapshot = task.getResult();
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult().exists()) {
+                                             Long amount = Long.valueOf(dataSnapshot.child("total").getValue().toString());
+                                            }
+                                        }
+                                    }
+                                });
+
+                        Toast.makeText(checkout.this, title[0], Toast.LENGTH_SHORT).show();
+
+                    }
+                }
             }
         });
     }

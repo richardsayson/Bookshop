@@ -10,9 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class order extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -21,13 +26,18 @@ public class order extends AppCompatActivity implements NavigationView.OnNavigat
     NavigationView navigationView;
     Toolbar toolbar;
     FirebaseAuth firebaseAuth;
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    OrderAdapter orderadapter;
+    DatabaseReference reference;
+    FirebaseDatabase firebaseDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-        ///----------- getting the current user
-        firebaseAuth = FirebaseAuth.getInstance();
+
 
         //-------------------Hooks____________
         drawerLayout = findViewById(R.id.draw_layout);
@@ -51,6 +61,31 @@ public class order extends AppCompatActivity implements NavigationView.OnNavigat
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_order);
 
+
+        ///-----Firebase--- getting the data from firebase
+        ///----------- getting the current user
+        firebaseAuth = FirebaseAuth.getInstance();
+        String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
+        String rightEmail = currentuserEmail.replace(".","");
+
+        recyclerView = findViewById(R.id.rv);
+        layoutManager = new LinearLayoutManager(order.this);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        FirebaseRecyclerOptions<orderModel> options =
+                new FirebaseRecyclerOptions.Builder<orderModel>()
+                        .setQuery(FirebaseDatabase.getInstance()
+                                .getReference().child("order").child(rightEmail), orderModel.class)
+                        .build();
+        orderadapter = new OrderAdapter(options);
+        recyclerView.setAdapter(orderadapter);
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        orderadapter.startListening();
     }
 
     @Override

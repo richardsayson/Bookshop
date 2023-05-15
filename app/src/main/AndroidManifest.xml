@@ -18,9 +18,6 @@
             android:name=".checkout"
             android:exported="false" />
         <activity
-            android:name=".buyBook"
-            android:exported="false" />
-        <activity
             android:name=".viewbook"
             android:exported="false" />
         <activity

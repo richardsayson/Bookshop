@@ -105,7 +105,7 @@ long orderid;
 
     private void AddCart(String rightEmail, String getTitle) {
 
-        FirebaseDatabase.getInstance().getReference("books")
+        FirebaseDatabase.getInstance().getReference("cart")
                 .child(rightEmail).child(getTitle).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -119,7 +119,7 @@ long orderid;
                                 map.put("title", bookTitle);
                                 map.put("price", Long.valueOf(bookPrice));
                                 map.put("url", bookUrl);
-                                map.put("quantity",  Long.valueOf(bookQuantity)+1);
+                                map.put("quantity",  Long.valueOf(bookQuantity));
                                 FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(getTitle)
                                         .setValue(map)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -151,8 +151,6 @@ long orderid;
                         }
                     }
                 });
-
-
     }
     private void AddBook(String getTitle) {
 

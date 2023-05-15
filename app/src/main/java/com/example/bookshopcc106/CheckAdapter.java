@@ -30,7 +30,7 @@ public class CheckAdapter extends FirebaseRecyclerAdapter<checkModel, CheckAdapt
         String rightEmail = currentuserEmail.replace(".","");
         holder.title.setText(model.getTitle());
         //holder.author.setText(model.getAuthor());
-        holder.totalOrder.setText(String.valueOf(model.getTotalAmount()));
+        holder.totalOrder.setText(String.valueOf(model.getTotal()));
         holder.price.setText("₱ "+model.getPrice()+".00");
         holder.quantity.setText("×"+String.valueOf(model.getQuantity()));
         Glide.with(holder.img.getContext())

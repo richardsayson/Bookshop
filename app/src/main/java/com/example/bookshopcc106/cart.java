@@ -6,8 +6,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,11 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.DecimalFormat;
 
 public class cart extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -105,15 +110,31 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
-        reference = FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail);
-        reference.child("total").addValueEventListener(new ValueEventListener() {
+        reference = FirebaseDatabase.getInstance().getReference("checkouttotal").child(rightEmail).child("total");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                long total=0 ,totalcost=0;
+                ////----- getting all totalamount value of checkout_currentUse
+                    DecimalFormat formatter = new DecimalFormat("#,###.00");
+//                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//
+//                        DecimalFormat formatter = new DecimalFormat("#,###.00");
+////                        long a = snapshot.getChildrenCount();
+////                        if (snapshot.getChildrenCount()>0) {
+////                            for (long i = 0; i <= a; i++) {
+////                                Object value = dataSnapshot.getValue();
+////                                total += Long.valueOf(value.toString());
+////                            }
+//                            totalcheck.setText("₱ " + formatter.format(Long.valueOf(total)));
+//
+                if (snapshot.exists()) {
+                    total = Long.valueOf(String.valueOf(snapshot.child("total").getValue()));
+                    totalcheck.setText("₱ " + formatter.format(Long.valueOf(total)));
+                }else{
 
-                        String bookTitle = String.valueOf(snapshot.child("total").getValue());
-                        totalcheck.setText("₱ "+bookTitle+".00");
                 }
+             //Toast.makeText(cart.this, jsonString, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -121,6 +142,36 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
+    }
+    public void B(String email) {
+        reference = FirebaseDatabase.getInstance().getReference("checkout").child(email);
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String a = snapshot.getKey();
+                Toast.makeText(cart.this,a, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     @Override
     protected void onStart() {

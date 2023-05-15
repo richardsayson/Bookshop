@@ -28,128 +28,31 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.myViewHolder> {
+public class OrderAdapter extends FirebaseRecyclerAdapter<orderModel, OrderAdapter.myViewHolder> {
     FirebaseAuth firebaseAuth;
     public long total;
     DatabaseReference reference;
     long id;
    int index;
-    public CartAdapter(@NonNull FirebaseRecyclerOptions<cartModel> options) {
+    public OrderAdapter(@NonNull FirebaseRecyclerOptions<orderModel> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull cartModel model) {
+    protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull orderModel model) {
         firebaseAuth = FirebaseAuth.getInstance();
         String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
         String rightEmail = currentuserEmail.replace(".","");
         holder.title.setText(model.getTitle());
         //holder.author.setText(model.getAuthor());
         holder.price.setText("₱ "+model.getPrice()+".00");
-        holder.quantity.setText(String.valueOf(model.getQuantity()));
+        holder.quantity.setText("×"+String.valueOf(model.getQuantity()));
         Glide.with(holder.img.getContext())
                 .load(model.getUrl())
                 .placeholder(R.drawable.outline_image_24)
                 .error(R.drawable.outline_image_24)
                 .into(holder.img);
-
-        ////______________checking if the book is on the checkout list
-        reference = FirebaseDatabase.getInstance().getReference("checkout");
-        reference.child(rightEmail).child(model.getTitle()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                        holder.selectBook.setChecked(true);
-                }
-                else{
-                    holder.selectBook.setChecked(false);
-                }
-                }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
-
-        ////------
         ///---------------
-        holder.add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Map<String,Object> map = new HashMap<>();
-                map.put("title",model.getTitle());
-                map.put("price",Long.valueOf(model.getPrice()));
-                map.put("url",model.getUrl());
-                map.put("quantity",model.quantity+1);
-                FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(model.getTitle())
-                        .setValue(map);
-                if (holder.selectBook.isChecked()){
-                    checkOutTotalAdd(model.getTitle(), rightEmail, model.getUrl(), model.getPrice(),model.getQuantity());
-                    checkOutAllAmountAdd(rightEmail, model.getPrice(), model.getQuantity());
-                }
-            }
-        });
-        holder.minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                   ////--------if book quantity in cart is less than 1 delete it
-                if (model.quantity>1) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("title", model.getTitle());
-                    map.put("price", Long.valueOf(model.getPrice()));
-                    map.put("url", model.getUrl());
-                    map.put("quantity", model.quantity - 1);
-                    FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(model.getTitle())
-                            .setValue(map);
-                    if (holder.selectBook.isChecked()){
-                        checkOutTotalMinus(model.getTitle(), rightEmail, model.getUrl(), model.getPrice(),model.getQuantity());
-                        checkOutAllAmountMinus(rightEmail, model.getPrice(), model.getQuantity());
-                    }
-
-                }else {
-                    FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(model.getTitle())
-                            .removeValue();
-                    FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle())
-                            .removeValue();
-                    checkOutAllAmountMinus(rightEmail, model.getPrice(), model.getQuantity());
-                }
-            }
-        });
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("cart").child(rightEmail).child(model.getTitle())
-                        .removeValue();
-                FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle()).removeValue();
-               // checkOutTotalMinus(rightEmail,model.getPrice(), model.getQuantity());
-                checkOutAllAmountMinus(rightEmail, model.getPrice(), model.getQuantity());
-            }
-        });
-       holder.selectBook.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               if (holder.selectBook.isChecked()){
-                   Map<String, Object> map = new HashMap<>();
-                   map.put("title", model.getTitle());
-                   map.put("price", Long.valueOf(model.getPrice()));
-                   map.put("url", model.getUrl());
-                   map.put("quantity", model.quantity);
-                   map.put("total",model.getQuantity()*model.getPrice());
-                   FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle())
-                           .setValue(map);
-                   checkOutAllAmount(rightEmail, model.getPrice(), model.getQuantity());
-                   //checkOutTotalAdd(model.getTitle(), rightEmail,model.getPrice(),model.getQuantity());
-                   FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle())
-                           .setValue(map);
-                   placeOrder(rightEmail,model.getTitle(),model.getPrice(),model.getUrl(),model.getQuantity(), model.getQuantity()* model.getPrice());
-               }else{
-                   FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle()).removeValue();
-                   checkOutAllAmount_unselect(rightEmail, model.getPrice(), model.getQuantity());
-                   orderCancel(rightEmail);
-               }
-           }
-       });
 
 
     }
@@ -203,12 +106,12 @@ public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.
                 });
         Map<String, Object> map = new HashMap<>();
         map.put("title", title);
-        map.put("price", Long.valueOf(price));
+        map.put("price", price);
         map.put("url", url);
-        map.put("quantity",Long.valueOf(quantity));
-        map.put("total",Long.valueOf(total));
+        map.put("quantity",quantity);
+        map.put("total",total);
         map.put("status","To Ship");
-        map.put("paymentmethod","Cash On Delivery");
+        map.put("payment method","Cash On Delivery");
         map.put("verify","true");
         FirebaseDatabase.getInstance().getReference("order").child(rightEmail).push()
                 .setValue(map);
@@ -388,7 +291,7 @@ public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item,parent,false);
         return new myViewHolder(v);
     }
 
@@ -406,11 +309,6 @@ public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.
             author = itemView.findViewById(R.id.checkout_total);
             price = itemView.findViewById(R.id.tv_price);
             viewbook = itemView.findViewById(R.id.l_view_book);
-            add = itemView.findViewById(R.id.add_quantity_cart);
-            minus = itemView.findViewById(R.id.minus_quantity_cart);
-            delete = itemView.findViewById(R.id.delete_cart_btn);
-            quantity = itemView.findViewById(R.id.quantity_cart);
-            selectBook = itemView.findViewById(R.id.cart_check_book);
 
 
         }
