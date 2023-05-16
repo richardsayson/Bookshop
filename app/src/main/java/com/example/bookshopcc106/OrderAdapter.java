@@ -3,9 +3,7 @@ package com.example.bookshopcc106;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,18 +41,20 @@ public class OrderAdapter extends FirebaseRecyclerAdapter<orderModel, OrderAdapt
         firebaseAuth = FirebaseAuth.getInstance();
         String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
         String rightEmail = currentuserEmail.replace(".","");
+
         holder.title.setText(model.getTitle());
         //holder.author.setText(model.getAuthor());
         holder.price.setText("₱ "+model.getPrice()+".00");
         holder.quantity.setText("×"+String.valueOf(model.getQuantity()));
+        holder.totalamount.setText(model.getTotal().toString());
+        holder.paymentMethod.setText(model.getPaymentmethod());
+        holder.status.setText(model.getStatus());
         Glide.with(holder.img.getContext())
                 .load(model.getUrl())
                 .placeholder(R.drawable.outline_image_24)
                 .error(R.drawable.outline_image_24)
                 .into(holder.img);
         ///---------------
-
-
     }
 /////--------------------Methods
     private void orderCancel(String rightEmail) {
@@ -297,18 +297,18 @@ public class OrderAdapter extends FirebaseRecyclerAdapter<orderModel, OrderAdapt
 
     class myViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
-        TextView title,author,price,add,minus,delete,quantity;
+        TextView title,price,quantity,status,paymentMethod,totalamount;
 
-        CheckBox selectBook;
-        LinearLayout viewbook;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.bookimg);
             title = itemView.findViewById(R.id.tv_title);
-            author = itemView.findViewById(R.id.checkout_total);
+             quantity = itemView.findViewById(R.id.checkout_quantity);
             price = itemView.findViewById(R.id.tv_price);
-            viewbook = itemView.findViewById(R.id.l_view_book);
+            status = itemView.findViewById(R.id.order_status);
+            paymentMethod =itemView.findViewById(R.id.payment_method_tv);
+            totalamount = itemView.findViewById(R.id.Order_total);
 
 
         }

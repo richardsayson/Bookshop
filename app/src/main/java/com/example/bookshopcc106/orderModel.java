@@ -1,21 +1,27 @@
 package com.example.bookshopcc106;
 
 public class orderModel {
-    String paymentmethod,status,title,url,verify;
-    Long price,quantity,total;
+   public String title,paymentmethod,status,url;
+   public Long price,quantity,total;
 
-    orderModel(){
-    }
+   orderModel(){}
 
-    public orderModel(String paymentmethod, String status, String title, String url, String verify, Long price, Long quantity, Long total) {
+    public orderModel(String title, String paymentmethod, String status, String url, Long price, Long quantity, Long total) {
+        this.title = title;
         this.paymentmethod = paymentmethod;
         this.status = status;
-        this.title = title;
         this.url = url;
-        this.verify = verify;
         this.price = price;
         this.quantity = quantity;
         this.total = total;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getPaymentmethod() {
@@ -34,28 +40,12 @@ public class orderModel {
         this.status = status;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getVerify() {
-        return verify;
-    }
-
-    public void setVerify(String verify) {
-        this.verify = verify;
     }
 
     public Long getPrice() {

@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/poppins"
-                android:text="Bookshop"
+                android:text="Bookshop Order"
                 android:textColor="#AFD3E2"
                 android:textSize="28sp"
                 />

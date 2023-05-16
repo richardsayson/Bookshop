@@ -8,8 +8,6 @@
     app:cardCornerRadius="5dp"
     android:padding="10dp"
     >
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -89,7 +87,7 @@
              android:paddingRight="10dp"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:text="Shipping Option"
+             android:text="Order Detials"
              android:textStyle="bold"
              android:textSize="18sp"
              />
@@ -105,20 +103,22 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content">
                <TextView
+                   android:id="@+id/payment_method_tv"
                    android:paddingLeft="10dp"
                    android:paddingRight="10dp"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:text="Shipping Option"
+                   android:text="Payment Method"
                    android:textStyle="bold"
                    android:textSize="16sp"
                    />
                <TextView
+                   android:id="@+id/order_status"
                    android:paddingLeft="10dp"
                    android:paddingRight="10dp"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:text="Shipping Option"
+                   android:text="Status"
                    android:textStyle="bold"
                    android:textSize="12sp"
                    />

@@ -16,6 +16,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DecimalFormat;
+
 public class HomeAdapter extends FirebaseRecyclerAdapter<HomeModel,HomeAdapter.myViewHolder> {
     FirebaseAuth firebaseAuth;
 
@@ -27,7 +29,8 @@ public class HomeAdapter extends FirebaseRecyclerAdapter<HomeModel,HomeAdapter.m
     protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull HomeModel model) {
         holder.title.setText(model.getTitle());
         //holder.author.setText(model.getAuthor());
-        holder.price.setText("₱ "+model.getPrice()+".00");
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+        holder.price.setText("₱ "+formatter.format(model.getPrice()));
         Glide.with(holder.img.getContext())
                 .load(model.getUrl())
                 .placeholder(R.drawable.outline_image_24)

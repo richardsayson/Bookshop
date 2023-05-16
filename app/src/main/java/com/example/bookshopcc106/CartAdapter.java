@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,9 +44,11 @@ public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.
         firebaseAuth = FirebaseAuth.getInstance();
         String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
         String rightEmail = currentuserEmail.replace(".","");
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+
         holder.title.setText(model.getTitle());
         //holder.author.setText(model.getAuthor());
-        holder.price.setText("₱ "+model.getPrice()+".00");
+        holder.price.setText("₱ "+formatter.format(model.getPrice()));
         holder.quantity.setText(String.valueOf(model.getQuantity()));
         Glide.with(holder.img.getContext())
                 .load(model.getUrl())
@@ -71,7 +74,7 @@ public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.
             }
 
         });
-
+      //////----------Eventss
         ////------
         ///---------------
         holder.add.setOnClickListener(new View.OnClickListener() {
@@ -135,22 +138,23 @@ public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.
                    map.put("price", Long.valueOf(model.getPrice()));
                    map.put("url", model.getUrl());
                    map.put("quantity", model.quantity);
-                   map.put("total",model.getQuantity()*model.getPrice());
+                   map.put("total",model.getQuantity()*model.getPrice()+84);
+                   map.put("status","To Pay");
+                   map.put("paymentmethod","Cash On Delivery");
                    FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle())
                            .setValue(map);
                    checkOutAllAmount(rightEmail, model.getPrice(), model.getQuantity());
                    //checkOutTotalAdd(model.getTitle(), rightEmail,model.getPrice(),model.getQuantity());
-                   FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle())
-                           .setValue(map);
-                   placeOrder(rightEmail,model.getTitle(),model.getPrice(),model.getUrl(),model.getQuantity(), model.getQuantity()* model.getPrice());
+//                   FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle())
+//                           .setValue(map);
+                 //  placeOrder(rightEmail,model.getTitle(),model.getPrice(),model.getUrl(),model.getQuantity(), model.getQuantity()* model.getPrice());
                }else{
                    FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).child(model.getTitle()).removeValue();
                    checkOutAllAmount_unselect(rightEmail, model.getPrice(), model.getQuantity());
-                   orderCancel(rightEmail);
+                //   orderCancel(rightEmail);
                }
            }
        });
-
 
     }
 /////--------------------Methods
@@ -210,7 +214,7 @@ public class CartAdapter extends FirebaseRecyclerAdapter<cartModel, CartAdapter.
         map.put("status","To Ship");
         map.put("paymentmethod","Cash On Delivery");
         map.put("verify","true");
-        FirebaseDatabase.getInstance().getReference("order").child(rightEmail).push()
+        FirebaseDatabase.getInstance().getReference("order").child(rightEmail).child(title)
                 .setValue(map);
     }
 

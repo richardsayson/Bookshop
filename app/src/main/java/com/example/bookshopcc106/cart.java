@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -51,9 +53,6 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_cart);
          check = findViewById(R.id.btn_checkout);
          totalcheck = findViewById(R.id.checkout_total);
-        ////-----getting current user
-        firebaseAuth = FirebaseAuth.getInstance();
-
         // _______ binding the recycle view
         recyclerView = findViewById(R.id.rv);
         layoutManager = new LinearLayoutManager(cart.this);
@@ -61,9 +60,12 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         ///-----Firebase--- getting the data from firebase
+        ////-----getting current user
+        firebaseAuth = FirebaseAuth.getInstance();
         String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
         String rightEmail = currentuserEmail.replace(".","");
 
+        //------------- getting the data from firebase
         FirebaseRecyclerOptions<cartModel> options =
                 new FirebaseRecyclerOptions.Builder<cartModel>()
                         .setQuery(FirebaseDatabase.getInstance()
@@ -72,11 +74,6 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
 
         cartadapter = new CartAdapter(options);
         recyclerView.setAdapter(cartadapter);
-
-        totalcheck.setText(String.valueOf(cartadapter.total));
-
-        //
-
         //-------------------Hooks____________
         drawerLayout = findViewById(R.id.draw_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -99,17 +96,31 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_cart);
 
-
-
         ////---------Events
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(cart.this,checkout.class);
-                startActivity(i);
+                reference = FirebaseDatabase.getInstance().getReference("checkouttotal").child(rightEmail).child("total");
+                reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        long total=0;
+                        if (task.isSuccessful()) {
+                            DataSnapshot snapshot = task.getResult();
+                            total = Long.valueOf(String.valueOf(snapshot.child("total").getValue()));
+                            if (total!=0){
+                                Intent i = new Intent(cart.this,checkout.class);
+                                startActivity(i);
+                            }else{
+                                Toast.makeText(cart.this,"No Selected Item", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
             }
         });
 
+        ///-----------------checking the total amount of select items
         reference = FirebaseDatabase.getInstance().getReference("checkouttotal").child(rightEmail).child("total");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -143,6 +154,8 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
         });
 
     }
+
+    /////----------Methods
     public void B(String email) {
         reference = FirebaseDatabase.getInstance().getReference("checkout").child(email);
         reference.addChildEventListener(new ChildEventListener() {

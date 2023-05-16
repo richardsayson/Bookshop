@@ -76,7 +76,7 @@ public class order extends AppCompatActivity implements NavigationView.OnNavigat
         FirebaseRecyclerOptions<orderModel> options =
                 new FirebaseRecyclerOptions.Builder<orderModel>()
                         .setQuery(FirebaseDatabase.getInstance()
-                                .getReference().child("order").child(rightEmail), orderModel.class)
+                                .getReference().child("orders").child(rightEmail), orderModel.class)
                         .build();
         orderadapter = new OrderAdapter(options);
         recyclerView.setAdapter(orderadapter);

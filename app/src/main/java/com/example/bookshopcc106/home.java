@@ -45,12 +45,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
          search = findViewById(R.id.et_search_book);
         searchbtn = findViewById(R.id.tv_search_btn);
 
-
-         ///-------- Getting the current user
-        firebaseAuth = FirebaseAuth.getInstance();
-
-
-
        // _______ binding the recycle view
         recyclerView = findViewById(R.id.rv);
         layoutManager = new GridLayoutManager(home.this,3);
