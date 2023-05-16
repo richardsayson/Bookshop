@@ -104,7 +104,7 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
                 reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        long total=0;
+                        long total;
                         if (task.isSuccessful()) {
                             DataSnapshot snapshot = task.getResult();
                             total = Long.valueOf(String.valueOf(snapshot.child("total").getValue()));
@@ -126,6 +126,7 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 long total=0 ,totalcost=0;
+
                 ////----- getting all totalamount value of checkout_currentUse
                     DecimalFormat formatter = new DecimalFormat("#,###.00");
 //                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -204,8 +205,6 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(intent);
         }
     }
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -232,7 +231,10 @@ public class cart extends AppCompatActivity implements NavigationView.OnNavigati
             Intent i = new Intent(getApplicationContext(), login.class);
             startActivity(i);
         }
-
+        if(id ==R.id.nav_profile){
+            Intent i = new Intent(getApplicationContext(),profile.class);
+            startActivity(i);
+        }
         return true;
     }
 }

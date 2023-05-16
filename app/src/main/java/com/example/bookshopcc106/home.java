@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -36,6 +38,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     EditText search;
     FirebaseAuth firebaseAuth;
     TextView searchbtn;
+    private AlertDialog loadingDialog;
 
 
     @Override
@@ -51,14 +54,13 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView.setLayoutManager(layoutManager);
 
 
-     ///-----Firebase--- getting the data from firebase
 
+     ///-----Firebase--- getting the data from firebase
         FirebaseRecyclerOptions<HomeModel> options =
                 new FirebaseRecyclerOptions.Builder<HomeModel>()
                         .setQuery(FirebaseDatabase.getInstance()
                                 .getReference().child("books"), HomeModel.class)
                         .build();
-
         homeAdapter = new HomeAdapter(options);
         recyclerView.setAdapter(homeAdapter);
         //
@@ -105,9 +107,22 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
     }
+    private void showLoadingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null);
+        builder.setView(view);
+        loadingDialog = builder.create();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show();
+    }
+
+    private void hideLoadingDialog() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
+    }
     private void showSearch(String toString) {
         if (!toString.isEmpty()){
-
             if(!toString.startsWith(toString.toLowerCase())){
                 FirebaseRecyclerOptions<HomeModel> options =
                         new FirebaseRecyclerOptions.Builder<HomeModel>()
@@ -121,8 +136,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 homeAdapter = new HomeAdapter(options);
                 recyclerView.setAdapter(homeAdapter);
                 homeAdapter.startListening();
-
-
             }
          else{
                 FirebaseRecyclerOptions<HomeModel> options =
@@ -189,16 +202,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-    /*    if(id ==R.id.nav_dashboard){
-            Intent i = new Intent(home.this,dashboard.class);
-            startActivity(i);
-        }
-        if(id ==R.id.nav_home){
-        } if(id ==R.id.nav_searchbook){
-            Intent i = new Intent(home.this,searchBook.class);
-            startActivity(i);
-        }
-        */
+
 
         if(id ==R.id.nav_cart){
             Intent i = new Intent(home.this,cart.class);
@@ -211,7 +215,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 firebaseAuth.signOut();
                 Intent i = new Intent(getApplicationContext(), login.class);
                 startActivity(i);
-
+        } if(id ==R.id.nav_profile){
+            Intent i = new Intent(home.this,profile.class);
+            startActivity(i);
         }
         return true;
     }

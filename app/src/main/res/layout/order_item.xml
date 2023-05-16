@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
-    android:elevation="10dp"
+    android:layout_margin="4dp"
+    android:elevation="20dp"
     app:cardCornerRadius="5dp"
-    android:padding="10dp"
+    android:padding="20dp"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,17 +21,18 @@
          android:layout_height="match_parent">
 
         <ImageView
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:id="@+id/bookimg"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:src="@mipmap/ic_launcher" />
 
      <LinearLayout
          android:layout_weight="2"
          android:orientation="vertical"
          android:layout_width="match_parent"
-         android:layout_height="wrap_content">
+         android:layout_height="wrap_content"
+         android:background="@drawable/add_minus_bg">
          <LinearLayout
              android:layout_weight="1"
              android:orientation="vertical"
@@ -45,7 +46,7 @@
                  android:layout_marginRight="5dp"
                  android:fontFamily="@font/lexend_mega"
                  android:text="TextView"
-                 android:textSize="12sp" />
+                 android:textSize="16sp" />
 
              <TextView
                  android:id="@+id/tv_price"
@@ -55,7 +56,7 @@
                  android:layout_marginRight="5dp"
                  android:fontFamily="@font/lexend_mega"
                  android:text="TextView"
-                 android:textSize="12sp" />
+                 android:textSize="16sp" />
              <LinearLayout
                  android:gravity="right"
                  android:layout_margin="10dp"
@@ -71,84 +72,52 @@
                      android:layout_height="wrap_content"
                      android:text="Price"
                      android:textStyle="bold"
-                     android:textSize="18sp"
+                     android:textSize="14sp"
                      />
-
-
              </LinearLayout>
+             <TextView
+                 android:id="@+id/order_status"
+                 android:paddingLeft="10dp"
+                 android:paddingRight="10dp"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Status"
+                 android:textStyle="bold"
+                 android:textSize="16sp"
+                 />
+             <TextView
+                 android:layout_marginTop="5dp"
+                 android:layout_weight="2"
+                 android:id="@+id/Order_total"
+                 android:background="@drawable/add_minus_bg"
+                 android:paddingLeft="10dp"
+                 android:paddingRight="10dp"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Order Total"
+                 android:textStyle="bold"
+                 android:textSize="16sp"
+                 android:textAlignment="textStart"
+                 />
          </LinearLayout>
 
      </LinearLayout>
      </LinearLayout>
 
 
-         <TextView
-             android:paddingLeft="10dp"
-             android:paddingRight="10dp"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Order Detials"
-             android:textStyle="bold"
-             android:textSize="18sp"
-             />
-       <LinearLayout
+        <LinearLayout
            android:orientation="horizontal"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:gravity="center">
+           android:layout_height="wrap_content">
            <LinearLayout
-               android:layout_weight="1"
+               android:layout_weight="2"
                android:layout_marginTop="5dp"
                android:orientation="vertical"
                android:layout_width="match_parent"
-               android:layout_height="wrap_content">
-               <TextView
-                   android:id="@+id/payment_method_tv"
-                   android:paddingLeft="10dp"
-                   android:paddingRight="10dp"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="Payment Method"
-                   android:textStyle="bold"
-                   android:textSize="16sp"
-                   />
-               <TextView
-                   android:id="@+id/order_status"
-                   android:paddingLeft="10dp"
-                   android:paddingRight="10dp"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="Status"
-                   android:textStyle="bold"
-                   android:textSize="12sp"
-                   />
-           </LinearLayout>
-           <TextView
-               android:layout_weight="1"
-               android:paddingLeft="10dp"
-               android:paddingRight="10dp"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="₱ 84"
-               android:textStyle="bold"
-               android:textSize="14sp"
-               android:textAlignment="textEnd"
-               />
+               android:layout_height="wrap_content"/>
+
        </LinearLayout>
-        <TextView
-            android:layout_marginTop="5dp"
-            android:layout_weight="6"
-            android:id="@+id/Order_total"
-            android:background="@drawable/add_minus_bg"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Order Total"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textAlignment="textStart"
-            />
+
 
      </LinearLayout>
 

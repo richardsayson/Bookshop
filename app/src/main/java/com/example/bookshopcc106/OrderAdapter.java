@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,12 +43,14 @@ public class OrderAdapter extends FirebaseRecyclerAdapter<orderModel, OrderAdapt
         String currentuserEmail = firebaseAuth.getCurrentUser().getEmail();
         String rightEmail = currentuserEmail.replace(".","");
 
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+
         holder.title.setText(model.getTitle());
         //holder.author.setText(model.getAuthor());
-        holder.price.setText("₱ "+model.getPrice()+".00");
+        holder.price.setText("₱ "+formatter.format(model.getPrice()));
         holder.quantity.setText("×"+String.valueOf(model.getQuantity()));
-        holder.totalamount.setText(model.getTotal().toString());
-        holder.paymentMethod.setText(model.getPaymentmethod());
+        holder.totalamount.setText("₱ "+formatter.format(model.getTotal()));
+       // holder.paymentMethod.setText(model.getPaymentmethod());
         holder.status.setText(model.getStatus());
         Glide.with(holder.img.getContext())
                 .load(model.getUrl())
@@ -307,7 +310,6 @@ public class OrderAdapter extends FirebaseRecyclerAdapter<orderModel, OrderAdapt
              quantity = itemView.findViewById(R.id.checkout_quantity);
             price = itemView.findViewById(R.id.tv_price);
             status = itemView.findViewById(R.id.order_status);
-            paymentMethod =itemView.findViewById(R.id.payment_method_tv);
             totalamount = itemView.findViewById(R.id.Order_total);
 
 

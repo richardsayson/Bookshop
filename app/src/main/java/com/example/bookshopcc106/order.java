@@ -131,6 +131,10 @@ public class order extends AppCompatActivity implements NavigationView.OnNavigat
             Intent i = new Intent(getApplicationContext(), login.class);
             startActivity(i);
         }
+        if(id ==R.id.nav_profile){
+            Intent i = new Intent(getApplicationContext(),profile.class);
+            startActivity(i);
+        }
 
         return true;
     }

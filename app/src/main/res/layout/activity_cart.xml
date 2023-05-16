@@ -100,7 +100,7 @@
                        android:layout_width="match_parent"
                        android:layout_height="match_parent"
                        android:fontFamily="@font/lexend_mega"
-                       android:text="total"
+                       android:text="₱ 0.00"
                        android:textColor="#146C94"
                        android:padding="4dp"
                        android:textSize="18sp"

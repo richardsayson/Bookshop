@@ -133,7 +133,8 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:background="@drawable/f_g_bg"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:id="@+id/google_logIn">
 
                         <ImageView
                             android:layout_width="40dp"
@@ -160,7 +161,8 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:layout_weight="1"
-                        android:background="@drawable/f_g_bg">
+                        android:background="@drawable/f_g_bg"
+                        android:id="@+id/facebook_login">
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"

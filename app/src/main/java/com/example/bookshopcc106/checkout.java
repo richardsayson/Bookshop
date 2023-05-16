@@ -92,6 +92,7 @@ public class checkout extends AppCompatActivity {
     private void clearCheckouts(String rightEmail) {
         FirebaseDatabase.getInstance().getReference("checkout").child(rightEmail).removeValue();
         FirebaseDatabase.getInstance().getReference("checkouttotal").child(rightEmail).removeValue();
+        FirebaseDatabase.getInstance().getReference("checkouttotal").child(rightEmail).getKey();
     }
 
     private void totalchecker(String rightEmail) {
